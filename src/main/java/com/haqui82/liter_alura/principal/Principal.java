@@ -13,13 +13,6 @@ public class Principal {
     private ConversorDatos conversorDatos = new ConversorDatos();
 
     public void muestraMenu() throws InterruptedException {
-        System.out.println("Escribe el numero de ID del libro a consultar");
-
-        var idLibro = teclado.nextInt();
-        var json = consumoApi.obtenerDatos("https://gutendex.com/books/"+idLibro+"/");
-        var datos = conversorDatos.obtenerDatos(json, DatosLibro.class);
-        System.out.println(json);
-        System.out.println(datos);
 
         // Variable para almacenar la elección del usuario
         int option = 0;
@@ -28,11 +21,12 @@ public class Principal {
             System.out.println("\nMenú de Opciones:");
             System.out.println("Para consultar libros escoge una de las opciones:");
             System.out.println("1. Buscar libro por titulo en la API de Gutendex");
-            System.out.println("2. Listar libros registrados en la base de datos");
-            System.out.println("3. Listar autores registrados en la base de datos");
-            System.out.println("4. Listar autores registrados en la base de datos; vivos en un determinado año");
-            System.out.println("5. Listar libros registrados en la bases de datos, por determinado idioma");
-            System.out.println("6. Salir");
+            System.out.println("2. Buscar libro por ID en la API de Gutendex");
+            System.out.println("3. Listar libros registrados en la base de datos");
+            System.out.println("4. Listar autores registrados en la base de datos");
+            System.out.println("5. Listar autores registrados en la base de datos; vivos en un determinado año");
+            System.out.println("6. Listar libros registrados en la bases de datos, por determinado idioma");
+            System.out.println("7. Salir");
 
             System.out.print("Por favor, elige una opción: ");
             // Leer la elección del usuario con control de errores
@@ -42,26 +36,42 @@ public class Principal {
                 switch (option) {
                     case 1:
                         System.out.println("Has elegido la Opción 1. Buscar libro por titulo en la API de Gutendex");
-                        //invocacion();
                         break;
+
                     case 2:
-                        System.out.println("Has elegido la Opción 2. Lista de libros registrados en la base de datos:");
+                        System.out.println("Has elegido la Opción 2. Buscar libro por ID en la API de Gutendex");
+                        System.out.println("Escribe el numero de ID del libro a consultar (1 al 75101)");
+                        var idLibro = teclado.nextInt();
+                        if (idLibro < 75102 ) {
+                            var json = consumoApi.obtenerDatos("https://gutendex.com/books/" + idLibro + "/");
+                            var datos = conversorDatos.obtenerDatos(json, DatosLibro.class);
+                            System.out.println(datos);
+                            Thread.sleep(3000);
+                        }else{
+                            System.out.println("Ingreso no valido");
+                            Thread.sleep(3000);
+                        }
+                        break;
+
+
+                    case 3:
+                        System.out.println("Has elegido la Opción 3. Lista de libros registrados en la base de datos:");
                         //invocacion(sufix2, sufix1);
                         break;
-                    case 3:
-                        System.out.println("Has elegido la Opción 3. Lista de autores registrados en la base de datos:");
+                    case 4:
+                        System.out.println("Has elegido la Opción 4. Lista de autores registrados en la base de datos:");
                         //invocacion(sufix1, sufix3);
                         break;
-                    case 4:
-                        System.out.println("Has elegido la Opción 4. Lista de autores registrados en la base de datos; vivos en un determinado año");
+                    case 5:
+                        System.out.println("Has elegido la Opción 5. Lista de autores registrados en la base de datos; vivos en un determinado año");
                         //invocacion(sufix3, sufix1);
                         break;
-                    case 5:
-                        System.out.println("Has elegido la Opción 5. Listar libros registrados en la bases de datos, por determinado idioma");
+                    case 6:
+                        System.out.println("Has elegido la Opción 6. Listar libros registrados en la bases de datos, por determinado idioma");
                         //invocacion(sufix1, sufix4);
                         break;
-                    case 6:
-                        System.out.println("Has elegido la Opción 6. ¡Hasta luego!");
+                    case 7:
+                        System.out.println("Has elegido la Opción 7. ¡Hasta luego!");
                         break;
                     default:
                         System.out.println("Opción no válida, por favor intenta de nuevo.");
@@ -71,7 +81,7 @@ public class Principal {
                 teclado.next(); // Limpiar el buffer del escáner
                 Thread.sleep(3000);
             }
-        } while (option != 6);
+        } while (option != 7);
         // Cerrar el scanner
         teclado.close();
     }

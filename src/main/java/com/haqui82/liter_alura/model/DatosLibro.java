@@ -2,11 +2,11 @@ package com.haqui82.liter_alura.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DatosLibro {
+
     // Atributos
     @JsonAlias("title")
     private String titulo;
@@ -53,8 +53,9 @@ public class DatosLibro {
     public void setNumeroDescargas(Integer numeroDescargas) {
         this.numeroDescargas = numeroDescargas;
     }
-
-    // Clase anidada para el manejo de datos la lista "autores"
+    // Fin de Getters Setters y constructores
+    //------------------------------
+    // Clase anidada para el manejo de datos de la lista "autores"
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Autor {
 
@@ -92,8 +93,8 @@ public class DatosLibro {
         public void setFallecimientoAutor(Integer fallecimientoAutor) {
             this.fallecimientoAutor = fallecimientoAutor;
         }
-    }
-
+    }// Fin de clase anidada
+    //-------------------------
     // Clase anidada para el manejo de datos en la lista "idiomas"
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Idioma {
@@ -109,7 +110,8 @@ public class DatosLibro {
         public void setIdioma(String idioma) {
             this.idioma = idioma;
         }
-    }
+    }// Fin de clase anidada
+    //--------------------------------
 
     @Override
     public String toString() {

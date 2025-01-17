@@ -20,7 +20,7 @@ public class Principal {
         do {
             System.out.println("\nMenú de Opciones:");
             System.out.println("Para consultar libros escoge una de las opciones:");
-            System.out.println("1. Buscar libro por titulo en la API de Gutendex");
+            System.out.println("1. Buscar libro por titulo y/o autor en la API de Gutendex");
             System.out.println("2. Buscar libro por ID en la API de Gutendex");
             System.out.println("3. Listar libros registrados en la base de datos");
             System.out.println("4. Listar autores registrados en la base de datos");
@@ -32,10 +32,20 @@ public class Principal {
             // Leer la elección del usuario con control de errores
             try {
                 option = teclado.nextInt();
+                teclado.nextLine(); // Limpiar el buffer después de nextInt()
+
                 // Procesar la elección del usuario
                 switch (option) {
                     case 1:
-                        System.out.println("Has elegido la Opción 1. Buscar libro por titulo en la API de Gutendex");
+                        System.out.println("Has elegido la Opción 1. Buscar libro por autor y/o titulo en la API de Gutendex");
+                        System.out.println("Escribe las palabras claves a buscar");
+                        var busqueda = teclado.nextLine();
+                        var busquedaURL = busqueda.replace(" ","%20");
+                        var json = consumoApi.obtenerDatos("https://gutendex.com/books/?search="+busquedaURL);
+                        System.out.println(json);
+                        //var datos = conversorDatos.obtenerDatos(json, DatosLibro.class);
+                        //System.out.println(datos);
+                        Thread.sleep(3000);
                         break;
 
                     case 2:
@@ -43,16 +53,15 @@ public class Principal {
                         System.out.println("Escribe el numero de ID del libro a consultar (1 al 75101)");
                         var idLibro = teclado.nextInt();
                         if (idLibro < 75102 ) {
-                            var json = consumoApi.obtenerDatos("https://gutendex.com/books/" + idLibro + "/");
-                            var datos = conversorDatos.obtenerDatos(json, DatosLibro.class);
-                            System.out.println(datos);
+                            var json2 = consumoApi.obtenerDatos("https://gutendex.com/books/" + idLibro + "/");
+                            var datos2 = conversorDatos.obtenerDatos(json2, DatosLibro.class);
+                            System.out.println(datos2);
                             Thread.sleep(3000);
-                        }else{
+                        } else {
                             System.out.println("Ingreso no valido");
                             Thread.sleep(3000);
                         }
                         break;
-
 
                     case 3:
                         System.out.println("Has elegido la Opción 3. Lista de libros registrados en la base de datos:");
@@ -78,7 +87,7 @@ public class Principal {
                 }
             } catch (Exception e) {
                 System.out.println("Ingreso no válido. Inténtelo de nuevo.");
-                teclado.next(); // Limpiar el buffer del escáner
+                teclado.nextLine(); // Limpiar el buffer del escáner
                 Thread.sleep(3000);
             }
         } while (option != 7);

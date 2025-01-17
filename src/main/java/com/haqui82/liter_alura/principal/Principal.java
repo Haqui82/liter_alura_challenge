@@ -2,7 +2,7 @@ package com.haqui82.liter_alura.principal;
 
 import com.haqui82.liter_alura.api_service.ConsumoAPI;
 import com.haqui82.liter_alura.api_service.ConversorDatos;
-import com.haqui82.liter_alura.model.DatosLibro;
+import com.haqui82.liter_alura.model.DatosLibros;
 
 import java.util.Scanner;
 
@@ -33,6 +33,7 @@ public class Principal {
             try {
                 option = teclado.nextInt();
                 teclado.nextLine(); // Limpiar el buffer después de nextInt()
+                var baseURL = "https://gutendex.com/books/";
 
                 // Procesar la elección del usuario
                 switch (option) {
@@ -41,7 +42,7 @@ public class Principal {
                         System.out.println("Escribe las palabras claves a buscar");
                         var busqueda = teclado.nextLine();
                         var busquedaURL = busqueda.replace(" ","%20");
-                        var json = consumoApi.obtenerDatos("https://gutendex.com/books/?search="+busquedaURL);
+                        var json = consumoApi.obtenerDatos(baseURL+"?search="+busquedaURL);
                         System.out.println(json);
                         //var datos = conversorDatos.obtenerDatos(json, DatosLibro.class);
                         //System.out.println(datos);
@@ -54,7 +55,7 @@ public class Principal {
                         var idLibro = teclado.nextInt();
                         if (idLibro < 75102 ) {
                             var json2 = consumoApi.obtenerDatos("https://gutendex.com/books/" + idLibro + "/");
-                            var datos2 = conversorDatos.obtenerDatos(json2, DatosLibro.class);
+                            var datos2 = conversorDatos.obtenerDatos(json2, DatosLibros.class);
                             System.out.println(datos2);
                             Thread.sleep(3000);
                         } else {

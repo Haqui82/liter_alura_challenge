@@ -2,7 +2,6 @@ package com.haqui82.liter_alura.api_service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.haqui82.liter_alura.model.DatosLibro;
 
 public class ConversorDatos implements IConvierteDatos {
 

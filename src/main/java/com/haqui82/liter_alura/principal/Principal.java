@@ -4,9 +4,12 @@ import com.haqui82.liter_alura.api_service.ConsumoAPI;
 import com.haqui82.liter_alura.api_service.ConversorDatos;
 import com.haqui82.liter_alura.model.DatosLibros;
 import com.haqui82.liter_alura.model.DatosResponses;
+import com.haqui82.liter_alura.model.DatosAutor;
 
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -44,13 +47,35 @@ public class Principal {
                         System.out.println("Has elegido la Opción 1. Buscar libro por autor y/o titulo en la API de Gutendex");
                         System.out.println("Escribe las palabras claves a buscar");
                         var busqueda = teclado.nextLine();
-                        var busquedaURL = busqueda.replace(" ","%20");
-                        var json = consumoApi.obtenerDatos(baseURL+"?search="+busquedaURL);
+                        var busquedaURL = busqueda.replace(" ", "%20");
+                        var json = consumoApi.obtenerDatos(baseURL + "?search=" + busquedaURL);
                         System.out.println(json);
                         var datos = conversorDatos.obtenerDatos(json, DatosResponses.class);
                         System.out.println(datos);
+
+                        // Numeración de líneas
+                        AtomicInteger contador = new AtomicInteger(1);
+
+                        System.out.println("Resultados de la búsqueda:");
+                        datos.resultados().stream()
+                                .forEach(libro -> {
+                                    // Obtener el enlace de descarga
+                                    //var enlaceDescarga = obtenerEnlaceDescarga(libro.id());
+
+                                    // Formato de impresión
+                                    System.out.println(
+                                            "\t" + contador.getAndIncrement() + ". ID Gutendex: " + libro.id() + "\n" +
+                                                    "\tTitulo:\t" + libro.titulo() + "\n" +
+                                                    "\tAutor:\t" + libro.autores().stream()
+                                                    .map(DatosAutor::nombre)
+                                                    .collect(Collectors.joining(", ")) + "\n"
+                                                    //"\tLink de descarga:\t" + enlaceDescarga + "\n"
+                                    );
+                                });
+
                         Thread.sleep(3000);
-                        break;
+                    break;
+
 
                     case 2:
                         System.out.println("Has elegido la Opción 2. Buscar libro por ID en la API de Gutendex");
@@ -60,23 +85,52 @@ public class Principal {
                             var json2 = consumoApi.obtenerDatos("https://gutendex.com/books/" + idLibro + "/");
                             var datos2 = conversorDatos.obtenerDatos(json2, DatosLibros.class);
                             System.out.println(datos2);
+                            //---------------------------
+                            // Formato de impresión
+                            System.out.println(
+                                "\t" + ". ID Gutendex: " + datos2.id() + "\n" +
+                                "\tTitulo:\t" + datos2.titulo() + "\n" +
+                                "\tAutor:\t" + datos2.autores() + "\n"
+                                //"\tLink de descarga:\t" + enlaceDescarga + "\n"
+                            );
+                            //---------------------------
                             Thread.sleep(3000);
                         } else {
                             System.out.println("Ingreso no valido");
                             Thread.sleep(3000);
                         }
-                        break;
+                    break;
 
                     case 3:
                         System.out.println("Top 10 de los libros más descargados");
                         var json3 = consumoApi.obtenerDatos(baseURL);
                         var datos3 = conversorDatos.obtenerDatos(json3, DatosResponses.class);
                         System.out.println(datos3);
-                        Thread.sleep(3000);
+
+// Numeración de líneas
+                        AtomicInteger contador2 = new AtomicInteger(1);
+
+                        System.out.println("Resultados de la búsqueda:");
                         datos3.resultados().stream()
                                 .sorted(Comparator.comparing(DatosLibros::numeroDescargas).reversed())
                                 .limit(10)
-                                .forEach(System.out::println);
+                                .forEach(libro -> {
+                                    // Obtener el enlace de descarga
+                                    //var enlaceDescarga = obtenerEnlaceDescarga(libro.id());
+
+                                    // Formato de impresión
+                                    System.out.println(
+                                            "\t" + contador2.getAndIncrement() + ". ID Gutendex: " + libro.id() + "\n" +
+                                                    "\tTitulo:\t" + libro.titulo() + "\n" +
+                                                    "\tAutor:\t" + libro.autores().stream()
+                                                    .map(DatosAutor::nombre)
+                                                    .collect(Collectors.joining(", ")) + "\n"
+                                                    //"\tLink de descarga:\t" + enlaceDescarga + "\n"
+                                    );
+                                });
+
+                        Thread.sleep(3000);
+
                         break;
 
                     case 4:

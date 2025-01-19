@@ -25,9 +25,10 @@ public class Principal {
         int option = 0;
         // Menú de opciones
         do {
-            System.out.println("\nMenú de Opciones:");
+            System.out.println("Hola amantes de la literatura");
+            System.out.println("\t\t\tMenú de Opciones:");
             System.out.println("Para consultar libros escoge una de las opciones:");
-            System.out.println("1. Buscar libro por titulo y/o autor en la API de Gutendex");
+            System.out.println("1. Buscar libro por titulo en la API de Gutendex");
             System.out.println("2. Buscar libro por ID en la API de Gutendex");
             System.out.println("3. Listar el top 10 de mayores descargas en la API de Gutendex");
             System.out.println("4. Listar libros registrados en la base de datos");
@@ -38,66 +39,68 @@ public class Principal {
 
             System.out.print("Por favor, elige una opción: ");
             // Leer la elección del usuario con control de errores
-            //try {
+            try {
                 option = Integer.parseInt(teclado.nextLine());
-                //teclado.nextLine(); // Limpiar el buffer después de nextInt()
                 var baseURL = "https://gutendex.com/books/";
 
                 // Procesar la elección del usuario
                 switch (option) {
                     case 1:
-                        System.out.println("Has elegido la Opción 1. Buscar libro por autor y/o titulo en la API de Gutendex");
-                        System.out.println("Escribe las palabras claves a buscar");
+                        System.out.println("Has elegido la Opción 1. Buscar libro por titulo en la API de Gutendex");
+                        System.out.println("Escribe el titulo o palabras en él a buscar");
                         var busqueda = teclado.nextLine();
                         var busquedaURL = busqueda.replace(" ", "%20");
+                        // realizar consumo de datos de la API
                         var json = consumoApi.obtenerDatos(baseURL + "?search=" + busquedaURL);
                         System.out.println(json);
+                        //transformar respuesta en objeto
                         var datos = conversorDatos.obtenerDatos(json, DatosResponses.class);
                         System.out.println(datos);
-                        //inicio funcion nueva
+                        //Tomar las respuesta (datos)>>acceder al atributo resultados (lista de tipo DatosLibros)
                         Optional<DatosLibros> resultadoBusqueda = datos.resultados().stream()
                                 .filter(l -> l.titulo().toUpperCase().contains(busqueda.toUpperCase()))
                                 .findFirst();
                         if(resultadoBusqueda.isPresent()){
-                            System.out.println("libro encontrado: ");
-                            System.out.println(resultadoBusqueda.get());
+                            System.out.println("Total de registros encontrados: "+ datos.cantidad());
+                            //System.out.println("libro encontrado: ");
+                            System.out.println(resultadoBusqueda.get().imprimeDatosLibro(datos));
                         }else {
                             System.out.println("Libro no encontrado");
                         }
-                        // Fin funcion nueva
-
-
-                        //-------------------------------------------
-                        // Inicio funcion antigua
-
-                        //System.out.println(datos);
-
-//                        // Numeración de líneas
-//                        AtomicInteger contador = new AtomicInteger(1);
-//
-//                        System.out.println("Resultados de la búsqueda:");
-//                        datos.resultados().stream()
-//                                .forEach(libro -> {
-//                                    // Obtener el enlace de descarga
-//                                    //var enlaceDescarga = obtenerEnlaceDescarga(libro.id());
-//
-//                                    // Formato de impresión
-//                                    System.out.println(
-//                                            "\t" + contador.getAndIncrement() + ". ID Gutendex: " + libro.id() + "\n" +
-//                                                    "\tTitulo:\t" + libro.titulo() + "\n" +
-//                                                    "\tAutor:\t" + libro.autores().stream()
-//                                                    .map(DatosAutor::nombre)
-//                                                    .collect(Collectors.joining(", ")) + "\n"
-//                                                    //"\tLink de descarga:\t" + enlaceDescarga + "\n"
-//                                    );
-//                                });
-
                         Thread.sleep(3000);
                     break;
 
-
                     case 2:
-                        System.out.println("Has elegido la Opción 2. Buscar libro por ID en la API de Gutendex");
+                        System.out.println("Has elegido la Opción 2. buscar libros por palabras clave");
+                        System.out.println("Escribe las palabras clave a buscar");
+                        var busqueda2 = teclado.nextLine();
+                        var busquedaURL2 = busqueda2.replace(" ", "%20");
+                        // realizar consumo de datos de la API
+                        var json2 = consumoApi.obtenerDatos(baseURL + "?search=" + busquedaURL2);
+                        System.out.println(json2);
+                        //transformar respuesta en objeto
+                        var datos2 = conversorDatos.obtenerDatos(json2, DatosResponses.class);
+                        System.out.println(datos2);
+                        // Formato de impresión
+                            // contador para Numeración de líneas
+                       AtomicInteger contador = new AtomicInteger(1);
+
+                        System.out.println("Resultados de la búsqueda:");
+                        datos2.resultados().stream()
+                            .forEach(libro -> {
+                                System.out.println(
+                                    "\t" + contador.getAndIncrement() +
+                                    "ID Gutendex: " + libro.id() + "\n" +
+                                    "\tTitulo:\t" + libro.titulo() + "\n" +
+                                    "\tAutor:\t" + libro.autores().stream()
+                                    .map(DatosAutor::nombre)
+                                    .collect(Collectors.joining(", ")) + "\n"
+                                    //"\tLink de descarga:\t" + enlaceDescarga + "\n"
+                                );
+                            });
+                    break;
+                    case 3:
+                        System.out.println("Has elegido la Opción 3. Buscar libro por ID en la API de Gutendex");
 //                        System.out.println("Escribe el numero de ID del libro a consultar (1 al 75101)");
 //                        var idLibro = teclado.nextInt();
 //                        if (idLibro < 75102 ) {
@@ -120,7 +123,7 @@ public class Principal {
 //                        }
                     break;
 
-                    case 3:
+                    case 4:
                         System.out.println("Top 10 de los libros más descargados");
 //                        var json3 = consumoApi.obtenerDatos(baseURL);
 //                        var datos3 = conversorDatos.obtenerDatos(json3, DatosResponses.class);
@@ -150,8 +153,10 @@ public class Principal {
 
                         break;
 
-                    case 4:
-                        System.out.println("Has elegido la Opción 4. Lista de libros registrados en la base de datos:");
+                    case 5:
+                        System.out.println("Has elegido la Opción 5. Lista de libros registrados en la base de datos:");
+
+//
 //                        System.out.println("Escribe el numero de ID del libro a consultar (1 al 75101)");
 //                        var idLibro4 = teclado.nextInt();
 //                        if (idLibro4 < 75102 ) {
@@ -162,30 +167,30 @@ public class Principal {
 //                        }
                         break;
 
-                    case 5:
-                        System.out.println("Has elegido la Opción 5. Lista de autores registrados en la base de datos:");
+                    case 6:
+                        System.out.println("Has elegido la Opción 6. Lista de autores registrados en la base de datos:");
                         //invocacion(sufix1, sufix3);
                         break;
-                    case 6:
-                        System.out.println("Has elegido la Opción 6. Lista de autores registrados en la base de datos; vivos en un determinado año");
+                    case 7:
+                        System.out.println("Has elegido la Opción 7. Lista de autores registrados en la base de datos; vivos en un determinado año");
                         //invocacion(sufix3, sufix1);
                         break;
-                    case 7:
-                        System.out.println("Has elegido la Opción 7. Listar libros registrados en la bases de datos, por determinado idioma");
+                    case 8:
+                        System.out.println("Has elegido la Opción 8. Listar libros registrados en la bases de datos, por determinado idioma");
                         //invocacion(sufix1, sufix4);
                         break;
-                    case 8:
-                        System.out.println("Has elegido la Opción 8. ¡Hasta luego!");
+                    case 9:
+                        System.out.println("Has elegido la Opción 9. ¡Hasta luego!");
                         break;
                     default:
                         System.out.println("Opción no válida, por favor intenta de nuevo.");
                 }
-//            } catch (Exception e) {
-//                System.out.println("Inténtelo de nuevo.");
-//                teclado.nextLine(); // Limpiar el buffer del escáner
-//                Thread.sleep(2000);
-//                            }
-        } while (option != 8);
+            } catch (Exception e) {
+                System.out.println("Inténtelo de nuevo.");
+                teclado.nextLine(); // Limpiar el buffer del escáner
+                Thread.sleep(2000);
+                            }
+        } while (option != 9);
         // Cerrar el scanner
         teclado.close();
     }

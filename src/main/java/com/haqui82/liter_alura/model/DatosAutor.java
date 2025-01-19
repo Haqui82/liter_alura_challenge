@@ -3,7 +3,7 @@ package com.haqui82.liter_alura.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties
+@JsonIgnoreProperties (ignoreUnknown = true)
 public record DatosAutor(
         @JsonAlias("name")
          String nombre,

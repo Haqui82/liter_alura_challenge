@@ -2,24 +2,36 @@ package com.haqui82.liter_alura.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-
+@Entity
+@Table(name = "datosLibros")
 @JsonIgnoreProperties (ignoreUnknown = true)
 public record DatosLibros(
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonAlias("id") Integer id,
+
+    @Column(unique = true)
     @JsonAlias("title")
     String titulo,
+
+    @ElementCollection
     @JsonAlias("authors")
     List<DatosAutor> autores,
+
+    @ElementCollection
     @JsonAlias("formats")
     Map<String, String> urls,
+
     @JsonAlias("languages")
     List<String> idiomas,
+
     @JsonAlias("download_count")
     Double numeroDescargas
 ) {
@@ -58,12 +70,4 @@ public record DatosLibros(
 
 
 
-//   public String imprimeDatosLibro() {
-//        return "\tID Gutendex: " + id + "\n" +
-//                "\tTitulo:\t " + titulo + "\n" +
-//                "\tAutor:\n\t " + autores+ "\n" +
-//                "\tIdiomas:\t " + String.join(", ", idiomas) + "\n" +
-//                "\tNúmero de Descargas:\t " + numeroDescargas + "\n" +
-//                "\tURLs: \n\t" + urls +"\n";
-//    };
 

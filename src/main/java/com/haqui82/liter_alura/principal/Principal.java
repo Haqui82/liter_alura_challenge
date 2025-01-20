@@ -57,7 +57,7 @@ public class Principal {
                         System.out.println(json);
                         //transformar respuesta en objeto
                         var datos = conversorDatos.obtenerDatos(json, DatosResponses.class);
-                        System.out.println(datos);
+                        //System.out.println(datos);
 
                         //Tomar las respuesta (datos)>>acceder al atributo resultados (lista de tipo DatosLibros)
                         Optional<DatosLibros> resultados_optional = datos.resultados().stream()
@@ -78,10 +78,10 @@ public class Principal {
                         var busquedaURL3 = busqueda3.replace(" ", "%20");
                         // Realizar consumo de datos de la API
                         var json3 = consumoApi.obtenerDatos(baseURL + "?ids=" + busquedaURL3);
-                        System.out.println(json3);
+                        //System.out.println(json3);
                         // Transformar respuesta en objeto
                         var datos3 = conversorDatos.obtenerDatos(json3, DatosResponses.class);
-                        System.out.println(datos3);
+                        //System.out.println(datos3);
 
                         // Verificar que la lista de resultados no sea null
                         if (datos3.resultados() != null && !datos3.resultados().isEmpty()) {
@@ -112,25 +112,10 @@ public class Principal {
                                 } });
                         Thread.sleep(3000);
                         break;
-
-//                                    System.out.println();
-////                                    // Formato de impresión
-//                                   .forEach(libro -> {
-//                                    System.out.println(
-//                                            "\t" + contador.getAndIncrement() +
-//                                                    " ID Gutendex:\t " + libro.id() + "\n" +
-//                                                    "\tTitulo: \t" + libro.titulo() + "\n" +
-//                                                    "\tAutor: \t" + libro.autores()+ "\n" +
-//                                                    "\tlink web: \t" + libro.urls.get("text/html") + "\n" +
-//                                                    "\tlink de descarga \t"+ libro.urls.get("application/octet-stream") +"\n"
-//                                    );
-//                                });//
-
-
                     case 4:
 
 
-                        break;
+                    break;
 
                     case 5:
 //                        System.out.println("Has elegido la Opción 5. Lista de libros registrados en la base de datos:");//

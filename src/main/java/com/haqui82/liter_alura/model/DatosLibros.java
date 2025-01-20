@@ -23,7 +23,7 @@ public record DatosLibros(
     @JsonAlias("download_count")
     Double numeroDescargas
 ) {
-    public DatosLibros imprimeDatosLibro(DatosResponses d) {
+    public DatosLibros imprimeDatosLibro(DatosResponses d) throws InterruptedException {
         // Formato de impresión
         // contador para Numeración de líneas
         AtomicInteger contador = new AtomicInteger(1);
@@ -42,15 +42,17 @@ public record DatosLibros(
                                 "\tTitulo: \t" + libro.titulo() + "\n" +
                                 "\tAutor: \t" + libro.autores()+ "\n" +
                                 "\tlink web: \t" + libro.urls.get("text/html") + "\n" +
-                                "\tlink de descarga \t"+ libro.urls.get("application/octet-stream") +"\n"                        );
+                                "\tlink de descarga \t"+ libro.urls.get("application/octet-stream") +"\n"
+                        );
 
                     });
         } else {
             System.out.println("No se encontraron resultados.");
-        }
+            }
+        Thread.sleep(3000);
 
-        return resultado; // Devolver el primer libro encontrado o null si no hay resultados
-    }
+    return resultado; // Devolver el primer libro encontrado o null si no hay resultados
+}
 
 }
 

@@ -16,4 +16,10 @@ public class ConversorDatos implements IConvierteDatos {
             throw new RuntimeException(e);
         }
     }
+
+    public String convertirAJson(Object objeto) {
+        try { return objectMapper.writeValueAsString(objeto); }
+        catch (JsonProcessingException e) {
+            throw new RuntimeException(e); } }
+
 }

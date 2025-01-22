@@ -1,19 +1,22 @@
 package com.haqui82.liter_alura.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 
-@JsonIgnoreProperties (ignoreUnknown = true)
 @Embeddable
-public record DatosAutor(
+public record Autor(
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(nullable = false)
+        Long id_autor,
+
         @JsonAlias("name")
-         String nombre,
+        String nombre,
 
         @JsonAlias("birth_year")
         Integer nacimientoAutor,
 
         @JsonAlias("death_year")
         Integer fallecimientoAutor
-) {
-}
+) {}

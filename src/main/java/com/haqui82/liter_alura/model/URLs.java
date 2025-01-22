@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Embeddable;
 
-@JsonIgnoreProperties (ignoreUnknown = true)
 @Embeddable
-public record DatosURLs(
-     @JsonAlias("text/html") String web,
-     @JsonAlias("application/octet-stream") String stream
-) {
-}
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record URLs(
+
+        @JsonAlias("text/html")
+        String web,
+
+        @JsonAlias("application/octet-stream")
+        String stream
+) {}
